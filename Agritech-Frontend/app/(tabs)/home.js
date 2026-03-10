@@ -8,6 +8,15 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { clearAuthToken, API_URL, getAuthToken } from '../../services/api';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+// Lazy import CropJourneyCard to handle missing dependencies
+let CropJourneyCard = null;
+try {
+  CropJourneyCard = require('../../components/CropJourneyCard').default;
+} catch (e) {
+  console.warn('CropJourneyCard component not available yet. Please install expo-notifications.');
+  CropJourneyCard = () => null;
+}
+
 // JWT decode helper
 const decodeToken = (token) => {
   try {
@@ -42,6 +51,20 @@ export default function CropRecommendationScreen() {
   const [sowingDateFromJourney, setSowingDateFromJourney] = useState(null);
   const [manualDateInput, setManualDateInput] = useState('');
   const [showCropRecommendation, setShowCropRecommendation] = useState(false);
+
+  // Theme object for CropJourneyCard
+  const theme = {
+    background: '#FFFFFF',
+    text: '#333333',
+    textSecondary: '#999999',
+    accent: '#4CAF50',
+    secondary: '#FF9800',
+    tertiary: '#2196F3',
+    border: '#E0E0E0',
+    lightBlue: '#E3F2FD',
+    lightOrange: '#FFF3E0',
+    lightAccent: '#F1F8E9',
+  };
 
   useEffect(() => {
     if (params.farmer) {
@@ -449,6 +472,16 @@ export default function CropRecommendationScreen() {
               <Text style={styles.viewCropsButtonText}>VIEW CROPS</Text>
             </TouchableOpacity>
           </View>
+
+          {/* Crop Journey Section */}
+          {isLocked && (
+            <>
+              <View style={styles.cropJourneySection}>
+                <Text style={styles.cropJourneyLabel}>📊 Crop Journey</Text>
+              </View>
+              <CropJourneyCard farmerId={farmerData?.id} theme={theme} />
+            </>
+          )}
         </>
       ) : null}
 
@@ -832,6 +865,19 @@ const styles = StyleSheet.create({
     borderLeftColor: '#FFA726',
   },
   cropRecLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
+  },
+  cropJourneySection: {
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    backgroundColor: '#E8F5E9',
+    borderLeftWidth: 5,
+    borderLeftColor: '#4CAF50',
+    marginTop: 20,
+  },
+  cropJourneyLabel: {
     fontSize: 14,
     fontWeight: '600',
     color: '#333',
