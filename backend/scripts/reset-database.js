@@ -9,16 +9,24 @@ const db = new sqlite3.Database("./farmers.db", (err) => {
   }
 });
 
-// Drop the old table with plaintext passwords
+// Drop the old tables with plaintext passwords
+db.run(`DROP TABLE IF EXISTS crop_journey`, (err) => {
+  if (err) {
+    console.log("Error dropping crop_journey table:", err);
+  } else {
+    console.log("✓ Dropped old crop_journey table");
+  }
+});
+
 db.run(`DROP TABLE IF EXISTS farmers`, (err) => {
   if (err) {
-    console.log("Error dropping table:", err);
+    console.log("Error dropping farmers table:", err);
   } else {
     console.log("✓ Dropped old farmers table");
   }
 });
 
-// Create new table fresh (passwords will now be hashed with bcrypt)
+// Create new tables fresh (passwords will now be hashed with bcrypt)
 db.run(`
 CREATE TABLE IF NOT EXISTS farmers (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38,11 +46,30 @@ CREATE TABLE IF NOT EXISTS farmers (
 )
 `, (err) => {
   if (err) {
-    console.log("Error creating table:", err);
+    console.log("Error creating farmers table:", err);
   } else {
     console.log("✓ Created fresh farmers table with proper structure");
     console.log("✓ waterAvailabilityMm stores mm values only");
     console.log("✓ Crop selection columns added (selected_crop, crop_locked, crop_selected_date)");
+  }
+});
+
+// Create crop_journey table for storing crop history
+db.run(`
+CREATE TABLE IF NOT EXISTS crop_journey (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  farmer_id INTEGER NOT NULL,
+  crop_name TEXT NOT NULL,
+  crop_sowing_date TEXT DEFAULT NULL,
+  crop_sowing_date_locked INTEGER DEFAULT 0,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (farmer_id) REFERENCES farmers(id)
+)
+`, (err) => {
+  if (err) {
+    console.log("Error creating crop_journey table:", err);
+  } else {
+    console.log("✓ Created fresh crop_journey table");
     console.log("\n✅ Database reset complete!");
     console.log("Now register new users - their passwords will be hashed with bcrypt\n");
   }

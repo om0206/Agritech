@@ -7,8 +7,8 @@ soil_encoder = joblib.load("soil_encoder.pkl")
 crop_encoder = joblib.load("crop_encoder.pkl")
 
 # Input values
-temperature = 30
-humidity = 70
+temperature = 35
+humidity = 25
 soil = "Sandy"
 water = 1500
 
