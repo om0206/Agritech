@@ -1,6 +1,6 @@
-// Change based on your setup:
-// - Web/Simulator: http://localhost:5000
-// - Real device: http://YOUR_COMPUTER_IP:5000 (Get IP: ipconfig on Windows)
+// API Configuration
+// For development/simulator: use localhost:5000
+// For real device: use your computer IP (get from: ipconfig)
 const BASE_URL = "http://localhost:5000/farmers";
 const API_URL = "http://localhost:5000";
 
@@ -26,6 +26,7 @@ export const clearAuthToken = () => {
 
 export const signupUser = async (data) => {
   try {
+    console.log("Attempting signup with URL:", `${BASE_URL}/signup`);
     const res = await fetch(`${BASE_URL}/signup`, {
       method: "POST",
       headers: {
@@ -33,12 +34,12 @@ export const signupUser = async (data) => {
       },
       body: JSON.stringify(data)
     });
-  
+
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({ message: "Unknown error" }));
       throw new Error(errorData.message || `HTTP ${res.status}: Signup failed`);
     }
-  
+
     return res.json();
   } catch (error) {
     console.error("❌ Signup error:", error);
@@ -48,6 +49,7 @@ export const signupUser = async (data) => {
 
 export const loginUser = async (data) => {
   try {
+    console.log("Attempting login with URL:", `${BASE_URL}/login`);
     const res = await fetch(`${BASE_URL}/login`, {
       method: "POST",
       headers: {
@@ -63,7 +65,6 @@ export const loginUser = async (data) => {
 
     const result = await res.json();
     
-    // Store token after successful login
     if (result.token) {
       setAuthToken(result.token);
     }

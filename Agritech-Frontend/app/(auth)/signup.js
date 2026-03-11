@@ -23,22 +23,24 @@ export default function Signup() {
   useEffect(() => {
     const fetchWaterOptions = async () => {
       try {
+        console.log("🌊 Fetching water options from:", `${API_URL}/farmers/options/water-availability`);
         const response = await fetch(`${API_URL}/farmers/options/water-availability`);
         
+        console.log("Water options response status:", response.status);
+        
         if (!response.ok) {
-          throw new Error(`API error: ${response.status}`);
+          throw new Error(`HTTP ${response.status}: Failed to fetch water options`);
         }
         
         const data = await response.json();
+        console.log("✅ Water options raw data:", data);
         
-        // Handle different response formats
         let options = [];
         if (Array.isArray(data)) {
           options = data;
         } else if (data.options && Array.isArray(data.options)) {
           options = data.options;
         } else if (data && typeof data === 'object') {
-          // If response is an object, convert to array
           options = Object.values(data);
         }
         
@@ -46,7 +48,7 @@ export default function Signup() {
         setWaterOptions(Array.isArray(options) ? options : []);
         setLoading(false);
       } catch (error) {
-        console.error("❌ Error fetching water options:", error);
+        console.error("❌ Error fetching water options:", error.message, "URL was:", `${API_URL}/farmers/options/water-availability`);
         // Fallback options if API fails
         setWaterOptions([
           { label: "Rainfed Only", value: "rainfed_only" },
@@ -65,10 +67,19 @@ export default function Signup() {
   }, []);
 
   const handleSignup = async () => {
+    console.log("📝 Register pressed");
+    console.log("API_URL:", API_URL);
+    console.log("BASE_URL:", BASE_URL);
 
-    console.log("Register pressed");
+    if (!username || !email || !password || !mobile || !location) {
+      alert("Please fill all required fields");
+      return;
+    }
 
     try {
+      console.log("🚀 Sending signup request with data:", {
+        username, email, mobile, location, landSize, soilDetails, waterAvailability, investment
+      });
 
       const res = await signupUser({
         username,
@@ -78,21 +89,18 @@ export default function Signup() {
         location,
         landSize,
         soilDetails,
-        waterAvailability,  // Send the value, not label
+        waterAvailability,
         investment
       });
 
-      console.log(res);
+      console.log("✅ Signup successful:", res);
       alert("Registration successful! Please login with your credentials");
       router.push("/(auth)/login");
 
     } catch (error) {
-
-      console.log(error);
+      console.error("❌ Signup failed with error:", error.message);
       alert("Signup failed: " + (error.message || "Unknown error"));
-
     }
-
   };
 
   return (
