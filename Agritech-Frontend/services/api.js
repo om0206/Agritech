@@ -1,8 +1,8 @@
 // API Configuration
 // For development/simulator: use localhost:5000
 // For real device: use your computer IP (get from: ipconfig)
-const BASE_URL = "http://localhost:5000/farmers";
-const API_URL = "http://localhost:5000";
+const BASE_URL = "http://10.141.89.28:5000/farmers";
+const API_URL = "http://10.141.89.28:5000";
 
 // Export for use in components
 export { API_URL, BASE_URL };

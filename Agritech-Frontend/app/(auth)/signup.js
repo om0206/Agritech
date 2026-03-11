@@ -1,7 +1,7 @@
 import { View, Text, TextInput, Button, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
-import { signupUser, API_URL } from "../../services/api";
+import { signupUser, API_URL, BASE_URL } from "../../services/api";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function Signup() {
