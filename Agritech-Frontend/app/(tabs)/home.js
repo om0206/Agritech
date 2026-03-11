@@ -894,6 +894,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,
     shadowRadius: 4,
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.15)',
   },
   mainCardTitle: {
     fontSize: 18,
@@ -944,6 +945,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,
     shadowRadius: 4,
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.15)',
     borderLeftWidth: 5,
     borderLeftColor: '#2E7D32',
   },
@@ -1073,6 +1075,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
+    boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.1)',
     elevation: 2,
   },
   cropHeader: {
@@ -1201,6 +1204,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+    boxShadow: '0px 2px 3.84px rgba(0, 0, 0, 0.25)',
     elevation: 5,
   },
   modalTitle: {

@@ -24,6 +24,11 @@ export default function Signup() {
     const fetchWaterOptions = async () => {
       try {
         const response = await fetch(`${API_URL}/farmers/options/water-availability`);
+        
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
+        
         const data = await response.json();
         
         // Handle different response formats
@@ -37,10 +42,11 @@ export default function Signup() {
           options = Object.values(data);
         }
         
+        console.log('✅ Water options loaded:', options);
         setWaterOptions(Array.isArray(options) ? options : []);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching water options:", error);
+        console.error("❌ Error fetching water options:", error);
         // Fallback options if API fails
         setWaterOptions([
           { label: "Rainfed Only", value: "rainfed_only" },

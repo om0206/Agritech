@@ -1,8 +1,8 @@
-// Change "192.168.1.14" to your computer's IP for mobile testing
-// On web/simulator: http://localhost:5000
-// On real phone: http://YOUR_COMPUTER_IP:5000
-const BASE_URL = "http://192.168.1.14:5000/farmers";
-const API_URL = "http://192.168.1.14:5000";
+// Change based on your setup:
+// - Web/Simulator: http://localhost:5000
+// - Real device: http://YOUR_COMPUTER_IP:5000 (Get IP: ipconfig on Windows)
+const BASE_URL = "http://localhost:5000/farmers";
+const API_URL = "http://localhost:5000";
 
 // Export for use in components
 export { API_URL, BASE_URL };
@@ -25,42 +25,54 @@ export const clearAuthToken = () => {
 };
 
 export const signupUser = async (data) => {
-  const res = await fetch(`${BASE_URL}/signup`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  });
-
-  if (!res.ok) {
-    throw new Error("Signup failed");
+  try {
+    const res = await fetch(`${BASE_URL}/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+  
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({ message: "Unknown error" }));
+      throw new Error(errorData.message || `HTTP ${res.status}: Signup failed`);
+    }
+  
+    return res.json();
+  } catch (error) {
+    console.error("❌ Signup error:", error);
+    throw new Error(error.message || "Network request failed - Backend not responding");
   }
-
-  return res.json();
 };
 
 export const loginUser = async (data) => {
-  const res = await fetch(`${BASE_URL}/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  });
+  try {
+    const res = await fetch(`${BASE_URL}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
 
-  if (!res.ok) {
-    throw new Error("Login failed");
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({ message: "Unknown error" }));
+      throw new Error(errorData.message || `HTTP ${res.status}: Login failed`);
+    }
+
+    const result = await res.json();
+    
+    // Store token after successful login
+    if (result.token) {
+      setAuthToken(result.token);
+    }
+
+    return result;
+  } catch (error) {
+    console.error("❌ Login error:", error);
+    throw new Error(error.message || "Network request failed - Backend not responding");
   }
-
-  const result = await res.json();
-  
-  // Store token after successful login - await properly here
-  if (result.token) {
-    setAuthToken(result.token);
-  }
-
-  return result;
 };
 
 export const updateFarmerProfile = async (id, data) => {

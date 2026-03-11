@@ -415,6 +415,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+    boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.2)',
     borderTopWidth: 4,
     borderTopColor: '#2E7D32',
   },
@@ -445,6 +446,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
+    boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.1)',
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -499,6 +501,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
+    boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.2)',
   },
   actionButtonText: {
     color: 'white',

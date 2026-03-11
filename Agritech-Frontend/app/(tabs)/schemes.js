@@ -331,6 +331,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
+    boxShadow: '0px 2px 3px rgba(0, 0, 0, 0.1)',
   },
   schemeTitle: {
     fontSize: 16,
